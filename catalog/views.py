@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, TemplateView
 
-from catalog.models import Product
+from catalog.models import Product, Blog
 
 
 # def home(request):
@@ -13,8 +13,17 @@ class ProductListView(ListView):
     model = Product
     extra_context = {'title': 'Список товаров'}
 
+#
+# def contacts(request):
+#     if request.method == 'POST':
+#         print(request.POST)
+#     return render(request, 'catalog/contacts.html')
 
-def contacts(request):
-    if request.method == 'POST':
-        print(request.POST)
-    return render(request, 'catalog/contacts.html')
+
+class ContactsListView(TemplateView):
+    template_name = 'catalog/contacts.html'
+
+
+class BlogList(ListView):
+    model = Blog
+    extra_context = {'title': 'Блог'}
