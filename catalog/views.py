@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, DetailView, CreateView
 
 from catalog.models import Product, Blog
 
@@ -27,3 +27,12 @@ class ContactsListView(TemplateView):
 class BlogList(ListView):
     model = Blog
     extra_context = {'title': 'Блог'}
+
+
+class BlogDetailView(DetailView):
+    model = Blog
+
+
+class BlogCreatePost(CreateView):
+    model = Blog
+

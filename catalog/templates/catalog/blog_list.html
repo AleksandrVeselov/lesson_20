@@ -29,16 +29,20 @@
                     <h5 class="card-title pricing-card-title">Дата публикации<br> {{ object.created_at }}</h5>
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>Просмотров: {{ object.views_count }}</li>
-                        <img src="{% mediapath_tag object.image %}" width="200"/> <!-- Tag -->
-{#                        <img src="{{ object.image|mediapath_filter }}" /> <!-- filter -->#}
+                        <img src="{% mediapath_tag object.image %}" width="200"/>
 
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Подробнее</button>
+                    <form action="/blog/{{ object.slug }}/">
+                    <button type="submit" class="btn btn-lg btn-block btn-outline-primary">Подробнее</button>
+                    </form>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
+<nav class="ms-5">
+    <a class="p-2 btn btn-outline-primary" href="/blog/create/">Новая запись</a>
+</nav>
 
 </div>
 {% endblock %}
