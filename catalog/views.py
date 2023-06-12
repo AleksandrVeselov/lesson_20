@@ -29,43 +29,60 @@ class ContactsListView(TemplateView):
 
 
 class BlogList(ListView):
-    model = Blog
-    extra_context = {'title': 'Блог'}
+    """Класс-контроллер для страницы со списком постов блога"""
+    model = Blog  # Модель с которой он работает
+    extra_context = {'title': 'Блог'}  # Заголовок страницы
 
     def get_queryset(self):
-        """Отбор постов у которых is_published=True"""
+        """Отбор постов у которых is_published=True для отображения на странице"""
+
         return Blog.objects.filter(is_published=True)
 
 
 class BlogDetailView(DetailView):
-    model = Blog
+    """Класс-контроллер для детального отображения информации о посте"""
+
+    model = Blog  # модель, с которой он работает
 
     def get_object(self, queryset=None):
+        """Переопределение метода get_object для увеличения количества просмотров"""
+
         object = super().get_object()
-        object.views_count += 1
+        object.views_count += 1  # увеличение количества просмотров
+
+        # Проверка, есть ли 100 просмотров у поста
         if object.views_count == 100:
-            send_email_100(object.title)
-        object.save()
+            send_email_100(object.title)  # Отправка сообщения на почту 'aleksandr1990veselov@yandex.ru'(не работает)
+
+        object.save()  # сохранение в базе данных
+
         return object
 
 
 class BlogCreatePost(CreateView):
-    model = Blog
-    fields = ('title', 'slug', 'content', 'image', 'is_published')
-    success_url = '/blog/'
+    """Класс-контроллер для отображения страницы с формой создание поста"""
+
+    model = Blog  # Модель с которой он работает
+    fields = ('title', 'slug', 'content', 'image', 'is_published')  # Поля для построения формы
+    success_url = '/blog/'  # URL адрес, на который происходит перенаправление после успешного создания записи в блоге
 
 
 class BlogUpdatePost(UpdateView):
-    model = Blog
-    fields = ('title', 'slug', 'content', 'image', 'is_published')
+    """Класс-контроллер для отображения формы изменение записи"""
+    model = Blog  # Модель, с которой он работает
+    fields = ('title', 'slug', 'content', 'image', 'is_published')  # поля для отображения в форме
 
     def get_success_url(self, *args, **kwargs):
-        slug = self.kwargs['slug']
-        url = reverse_lazy('catalog:blog_post', args=[slug])
+        """Переопределение метода get_success_url для формирования правильного URL на который происходит
+        перенаправление после успешного изменения записи блога"""
+
+        slug = self.kwargs['slug']  # slug статьи
+        url = reverse_lazy('catalog:blog_post', args=[slug])  # формирование URL
 
         return url
 
 
 class BlogDeletePost(DeleteView):
-    model = Blog
-    success_url = '/blog/'
+    """Класс-контроллер для уделения записи в блоге"""
+    model = Blog  # Модель, с которой он работает
+    success_url = '/blog/'  # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге

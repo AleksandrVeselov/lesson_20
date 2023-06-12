@@ -20,8 +20,8 @@ class Product(models.Model):
 
 
 class Category(models.Model):
-    title = models.CharField(max_length=50, verbose_name='Название')
-    description = models.TextField(blank=True, null=True, verbose_name='Описание')
+    title = models.CharField(max_length=50, verbose_name='Название')  # название категории
+    description = models.TextField(blank=True, null=True, verbose_name='Описание')  # описание категории
 
     def __str__(self):
         return f'{self.title}'
@@ -42,6 +42,7 @@ class Blog(models.Model):
     views_count = models.IntegerField(default=0)  # количество просмотров (по умолчанию 0)
 
     def __str__(self):
+        """Строковое представление"""
         return f'{self.title} {self.created_at}'
 
     class Meta:
