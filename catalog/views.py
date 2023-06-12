@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
 
 from catalog.models import Product, Blog
+from catalog.services import send_email_100
 
 
 # def home(request):
@@ -11,10 +12,11 @@ from catalog.models import Product, Blog
 #     return render(request, 'catalog/home.html', context)
 
 class ProductListView(ListView):
-    model = Product
-    extra_context = {'title': 'Список товаров'}
+    """Класс-контроллер для страницы со списком продуктов"""
+    model = Product  # Модель с которой он работает
+    extra_context = {'title': 'Список товаров'}  # Заголовок страницы
 
-#
+
 # def contacts(request):
 #     if request.method == 'POST':
 #         print(request.POST)
@@ -22,7 +24,8 @@ class ProductListView(ListView):
 
 
 class ContactsListView(TemplateView):
-    template_name = 'catalog/contacts.html'
+    """Класс-контроллер страницы с контактами"""
+    template_name = 'catalog/contacts.html'  # Шаблон для отображения
 
 
 class BlogList(ListView):
@@ -37,6 +40,14 @@ class BlogList(ListView):
 class BlogDetailView(DetailView):
     model = Blog
 
+    def get_object(self, queryset=None):
+        object = super().get_object()
+        object.views_count += 1
+        if object.views_count == 100:
+            send_email_100(object.title)
+        object.save()
+        return object
+
 
 class BlogCreatePost(CreateView):
     model = Blog
@@ -47,10 +58,14 @@ class BlogCreatePost(CreateView):
 class BlogUpdatePost(UpdateView):
     model = Blog
     fields = ('title', 'slug', 'content', 'image', 'is_published')
-    success_url = '/blog/'
+
+    def get_success_url(self, *args, **kwargs):
+        slug = self.kwargs['slug']
+        url = reverse_lazy('catalog:blog_post', args=[slug])
+
+        return url
 
 
 class BlogDeletePost(DeleteView):
     model = Blog
     success_url = '/blog/'
-
