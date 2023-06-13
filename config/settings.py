@@ -134,7 +134,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'sanek_ves@mail.ru'
-EMAIL_HOST_PASSWORD = 'nfvHRi7ceDiLb9EjZDjE'
+EMAIL_HOST_PASSWORD = '###########'  # Здесь должен быть пароль для внешнего приложения из аккаунта почты mail.ru
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
