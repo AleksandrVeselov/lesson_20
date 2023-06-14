@@ -26,3 +26,4 @@ class BlogAdmin(admin.ModelAdmin):
 
     list_display = ['title', 'slug', 'content']  # Поля для отображения в админ-панели
     prepopulated_fields = {'slug': ('title',)}  # Поле для автоматического заполнения исходя из поля title
+

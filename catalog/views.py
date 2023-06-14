@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
+from slugify import slugify
 
 from catalog.models import Product, Blog
 from catalog.services import send_email_100
@@ -63,14 +64,14 @@ class BlogCreatePost(CreateView):
     """Класс-контроллер для отображения страницы с формой создание поста"""
 
     model = Blog  # Модель с которой он работает
-    fields = ('title', 'slug', 'content', 'image', 'is_published')  # Поля для построения формы
+    fields = ('title', 'content', 'image', 'is_published')  # Поля для построения формы
     success_url = '/blog/'  # URL адрес, на который происходит перенаправление после успешного создания записи в блоге
 
 
 class BlogUpdatePost(UpdateView):
     """Класс-контроллер для отображения формы изменение записи"""
     model = Blog  # Модель, с которой он работает
-    fields = ('title', 'slug', 'content', 'image', 'is_published')  # поля для отображения в форме
+    fields = ('title', 'content', 'image', 'is_published')  # поля для отображения в форме
 
     def get_success_url(self, *args, **kwargs):
         """Переопределение метода get_success_url для формирования правильного URL на который происходит

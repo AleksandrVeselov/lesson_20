@@ -1,4 +1,5 @@
 from django.db import models
+from slugify import slugify
 
 
 class Product(models.Model):
@@ -15,6 +16,12 @@ class Product(models.Model):
     def __str__(self):
         """Строковое представление"""
         return f'{self.title} {self.price}'
+
+    def __init__(self, *args, **kwargs):
+        """Переопределение метода __init__ для автоматического формирования слага"""
+        super().__init__(*args, **kwargs)
+        self.slug = slugify(self.title)
+        save = self.save()
 
     class Meta:
         verbose_name = 'Продукт'
@@ -46,6 +53,12 @@ class Blog(models.Model):
     def __str__(self):
         """Строковое представление"""
         return f'{self.title} {self.created_at}'
+
+    def __init__(self, *args, **kwargs):
+        """Переопределение метода __init__ для автоматического формирования слага"""
+        super().__init__(*args, **kwargs)
+        self.slug = slugify(self.title)
+        save = self.save()
 
     class Meta:
         verbose_name = 'Пост'
