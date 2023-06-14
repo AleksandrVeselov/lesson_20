@@ -17,12 +17,6 @@ class Product(models.Model):
         """Строковое представление"""
         return f'{self.title} {self.price}'
 
-    def __init__(self, *args, **kwargs):
-        """Переопределение метода __init__ для автоматического формирования слага"""
-        super().__init__(*args, **kwargs)
-        self.slug = slugify(self.title)
-        save = self.save()
-
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
