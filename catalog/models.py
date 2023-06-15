@@ -48,11 +48,16 @@ class Blog(models.Model):
         """Строковое представление"""
         return f'{self.title} {self.created_at}'
 
-    def __init__(self, *args, **kwargs):
-        """Переопределение метода __init__ для автоматического формирования слага"""
-        super().__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     """Переопределение метода __init__ для автоматического формирования слага"""
+    #     super().__init__(*args, **kwargs)
+    #     self.slug = slugify(self.title)
+    #     save = self.save()
+
+    def save(self, *args, **kwargs):
+        """Переопределение метода для автоматического формирования слага"""
         self.slug = slugify(self.title)
-        save = self.save()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name = 'Пост'
