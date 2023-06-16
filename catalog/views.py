@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
-from slugify import slugify
 
+from catalog.forms import ProductForm
 from catalog.models import Product, Blog
 from catalog.services import send_email_100
 
@@ -87,3 +87,27 @@ class BlogDeletePost(DeleteView):
     """Класс-контроллер для уделения записи в блоге"""
     model = Blog  # Модель, с которой он работает
     success_url = '/blog/'  # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
+
+
+class ProductCreateView(CreateView):
+    """Класс-контроллер для создания продукта"""
+    model = Product  # Модель, с которой он работает
+    form_class = ProductForm  # Форма для заполнения
+
+    # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
+    success_url = reverse_lazy('catalog:home')
+
+
+class ProductUpdateView(UpdateView):
+    """Класс-контроллер для редактирования продукта"""
+    model = Product  # Модель, с которой он работает
+    form_class = ProductForm  # Форма для заполнения
+
+    # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
+    success_url = reverse_lazy('catalog:home')
+
+
+class ProductDeleteView(DeleteView):
+    """Класс-контроллер для удаления продукта"""
+    model = Product  # Модель, с которой он работает
+    success_url = reverse_lazy('catalog:home')  # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
