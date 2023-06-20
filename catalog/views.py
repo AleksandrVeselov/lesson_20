@@ -3,7 +3,7 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, TemplateView, DetailView, CreateView, UpdateView, DeleteView
 
 from catalog.forms import ProductForm
-from catalog.models import Product, Blog
+from catalog.models import Product, Blog, Version
 from catalog.services import send_email_100
 
 
@@ -110,4 +110,15 @@ class ProductUpdateView(UpdateView):
 class ProductDeleteView(DeleteView):
     """Класс-контроллер для удаления продукта"""
     model = Product  # Модель, с которой он работает
-    success_url = reverse_lazy('catalog:home')  # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
+    # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
+    success_url = reverse_lazy('catalog:home')
+
+
+class VersionListView(ListView):
+    """Класс-контроллер для отображения списка активных версии текущего продукта"""
+    model = Version
+    extra_context = {'title': 'Список версий'}
+
+    def get_queryset(self):
+        return Version.objects.filter(is_active=True)
+

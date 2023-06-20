@@ -15,7 +15,7 @@ class Product(models.Model):
 
     def __str__(self):
         """Строковое представление"""
-        return f'{self.title} {self.price}'
+        return f'{self.title}'
 
     class Meta:
         verbose_name = 'Продукт'
@@ -48,12 +48,6 @@ class Blog(models.Model):
         """Строковое представление"""
         return f'{self.title} {self.created_at}'
 
-    # def __init__(self, *args, **kwargs):
-    #     """Переопределение метода __init__ для автоматического формирования слага"""
-    #     super().__init__(*args, **kwargs)
-    #     self.slug = slugify(self.title)
-    #     save = self.save()
-
     def save(self, *args, **kwargs):
         """Переопределение метода для автоматического формирования слага"""
         self.slug = slugify(self.title)
@@ -62,3 +56,19 @@ class Blog(models.Model):
     class Meta:
         verbose_name = 'Пост'
         verbose_name_plural = 'Посты'
+
+
+class Version(models.Model):
+    """Модель Версия продукта"""
+    product = models.ForeignKey('catalog.Product', on_delete=models.CASCADE, verbose_name='Продукт')  # Продукт
+    number = models.IntegerField(verbose_name='Номер версии', unique=True)
+    title = models.CharField(max_length=100, verbose_name='Название версии')
+    description = models.TextField(verbose_name='Описание текущей версии', blank=True, null=True)
+    is_active = models.BooleanField(verbose_name='Активность')
+
+    def __str__(self):
+        return f'Продукт {self.product} версии {self.title}'
+
+    class Meta:
+        verbose_name = 'Версия'
+        verbose_name_plural = 'Версии'

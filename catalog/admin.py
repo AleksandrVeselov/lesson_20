@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from catalog.models import Category, Product, Blog
+from catalog.models import Category, Product, Blog, Version
 
 
 # Register your models here.
@@ -26,4 +26,11 @@ class BlogAdmin(admin.ModelAdmin):
 
     list_display = ['title', 'slug', 'content']  # Поля для отображения в админ-панели
     prepopulated_fields = {'slug': ('title',)}  # Поле для автоматического заполнения исходя из поля title
+
+
+@admin.register(Version)
+class VersionAdmin(admin.ModelAdmin):
+    """Админ-панель для работы с моделью Version"""
+
+    list_display = ['product', 'number', 'title', 'is_active']
 
