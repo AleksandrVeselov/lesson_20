@@ -53,7 +53,7 @@ class BlogDetailView(DetailView):
 
         # Проверка, есть ли 100 просмотров у поста
         if object.views_count == 100:
-            send_email_100(object.title)  # Отправка сообщения на почту 'aleksandr1990veselov@yandex.ru'(не работает)
+            send_email_100(object.title)  # Отправка сообщения на почту 'aleksandr1990veselov@yandex.ru'
 
         object.save()  # сохранение в базе данных
 
@@ -117,8 +117,18 @@ class ProductDeleteView(DeleteView):
 class VersionListView(ListView):
     """Класс-контроллер для отображения списка активных версии текущего продукта"""
     model = Version
-    extra_context = {'title': 'Список версий'}
 
-    def get_queryset(self):
-        return Version.objects.filter(is_active=True)
+    def get_queryset(self, *args, **kwargs):
+        """Переопределение метода get_queryset для возможности отфильтровать активные версии продукта с нужным id"""
 
+        product_pk = self.kwargs.get('pk')  # получение id продукта
+        return Version.objects.filter(is_active=True, product_id=product_pk)
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        """Переопределение метода get_context_data для передачи в шаблон и отображения на странице
+         наименования продукта"""
+
+        product = Product.objects.get(pk=self.kwargs.get('pk'))  # Получение продукта с соответствующим id
+        context = super().get_context_data(*args, **kwargs)  # получение контекста
+        context['product_title'] = product.title  # добавление в контекст наименования продукта
+        return context
