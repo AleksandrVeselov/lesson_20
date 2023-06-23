@@ -127,6 +127,9 @@ class ProductUpdateView(UpdateView):
             formset.save()
         return super().form_valid(form)
 
+    def get_success_url(self, **kwargs):
+        return reverse('catalog:update_product', args=[self.kwargs.get('pk')])
+
 
 class ProductDeleteView(DeleteView):
     """Класс-контроллер для удаления продукта"""
