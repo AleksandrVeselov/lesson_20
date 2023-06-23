@@ -156,3 +156,11 @@ class VersionListView(ListView):
         context = super().get_context_data(*args, **kwargs)  # получение контекста
         context['product_title'] = product.title  # добавление в контекст наименования продукта
         return context
+
+
+class VersionUpdateView(UpdateView):
+    """Класс-контроллер для редактирования версии продукта"""
+    model = Version  # Модель, с которой он работает
+    fields = ('title', 'content', 'image', 'is_published')  # поля для отображения в форме
+    template_name = 'catalog/blog_form.html'
+    success_url = reverse_lazy('catalog:home')
