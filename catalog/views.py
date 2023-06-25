@@ -108,12 +108,18 @@ class ProductUpdateView(UpdateView):
     success_url = reverse_lazy('catalog:home')
 
     def get_context_data(self, **kwargs):
+        """Переопределение метода get_context_data, добавление в контекст формсета"""
+
         context_data = super().get_context_data(**kwargs)
+
+        # 1-Родительская модель 2-модель дочерняя 3-модель формы extra-количество новых форм
         ParentFormset = inlineformset_factory(Product, Version, VersionForm, extra=1)
+
         if self.request.method == 'POST':
             formset = ParentFormset(self.request.POST, instance=self.object)
         else:
             formset = ParentFormset(instance=self.object)
+
         context_data['formset'] = formset
         return context_data
 
@@ -128,7 +134,9 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse('catalog:update_product', args=[self.kwargs.get('pk')])
+        """В случае успешного заполнения формы перенаправление на страницу с версиями соответствующего продукта"""
+
+        return reverse('catalog:version', args=[self.kwargs.get('pk')])
 
 
 class ProductDeleteView(DeleteView):
@@ -155,12 +163,5 @@ class VersionListView(ListView):
         product = Product.objects.get(pk=self.kwargs.get('pk'))  # Получение продукта с соответствующим id
         context = super().get_context_data(*args, **kwargs)  # получение контекста
         context['product_title'] = product.title  # добавление в контекст наименования продукта
+        context['pk'] = product.pk  # добавление в контекст id продукта
         return context
-
-
-class VersionUpdateView(UpdateView):
-    """Класс-контроллер для редактирования версии продукта"""
-    model = Version  # Модель, с которой он работает
-    fields = ('title', 'content', 'image', 'is_published')  # поля для отображения в форме
-    template_name = 'catalog/blog_form.html'
-    success_url = reverse_lazy('catalog:home')
