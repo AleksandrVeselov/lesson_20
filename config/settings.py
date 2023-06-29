@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'catalog',
+    'users'
 ]
 
 MIDDLEWARE = [
@@ -137,4 +138,6 @@ EMAIL_HOST_USER = 'sanek_ves@mail.ru'
 EMAIL_HOST_PASSWORD = '################'  # Здесь должен быть пароль для внешнего приложения из аккаунта mail.ru
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
+
+AUTH_USER_MODEL = 'users.User'
 
