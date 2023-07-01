@@ -24,6 +24,7 @@
                 <div class="card-body">
                     {{ formset.management_form }}
                     {% for form in formset.forms %}
+                        {% form.errors %}
                         {{ form.as_p }}
                     {% endfor %}
                 </div>

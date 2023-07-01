@@ -77,18 +77,3 @@ class Version(models.Model):
         verbose_name = 'Версия'
         verbose_name_plural = 'Версии'
 
-    def clean(self):
-        """Проверка количества активных версий продукта"""
-        super().clean()
-
-        versions = Version.objects.filter(product=self.product, is_active=True)  # фильтрация активных версий продукта
-
-        # Если количество активных версий продукта больше 1
-        if len(versions) > 1:
-            print("Тут должна возвращаться ошибка: 'Активной версией может быть только одна!'")
-            print(len(versions))
-
-        # Иначе
-        else:
-            print('Успех!')
-
