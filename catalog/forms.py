@@ -57,11 +57,11 @@ class VersionForm(forms.ModelForm):
 
     def clean_is_active(self):
         is_active = self.cleaned_data['is_active']
-        print(is_active)
         product = self.cleaned_data['product']
         products = Version.objects.filter(product=product, is_active=True)
         print(len(products))
         if len(products) >= 1:
             print('Нельзя добавить более одной активной версии')
+            self.add_error('is_active', 'Нельзя добавить более одной активной версии')
             raise forms.ValidationError('Нельзя добавить более одной активной версии')
         return is_active

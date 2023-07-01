@@ -24,7 +24,11 @@
                 <div class="card-body">
                     {{ formset.management_form }}
                     {% for form in formset.forms %}
-                        {{ form.non_field_errors }}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <span class="text-danger">{{ error }}</span>
+                            {% endfor %}
+                        {% endfor %}
                         {{ form.as_p }}
                     {% endfor %}
                 </div>
