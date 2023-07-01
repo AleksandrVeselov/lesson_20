@@ -12,7 +12,7 @@ class UserRegisterForm(UserCreationForm):
         model = User
         fields = ('email', 'password1', 'password2')
 
-    def save(self, commit=True, *args, **kwargs):
+    def save(self, commit=True):
         user = super().save()
         send_mail(subject='Активация',
                   message=f'Для активации профиля пройдите по ссылке - http://127.0.0.1:8000/users/activate/{user.id}/',

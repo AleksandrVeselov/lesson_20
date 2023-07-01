@@ -98,6 +98,13 @@ class ProductCreateView(CreateView):
     # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
     success_url = reverse_lazy('catalog:home')
 
+    def form_valid(self, form):
+        product = form.save()
+        product.owner = self.request.user
+        product.save()
+        return super().form_valid(form)
+
+
 
 class ProductUpdateView(UpdateView):
     """Класс-контроллер для редактирования продукта"""
