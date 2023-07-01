@@ -18,6 +18,7 @@ class ProductForm(forms.ModelForm):
         # exclude = ('image',)  # Кроме поля image
 
     def clean_title(self):
+        """Поиск в названии запрещенных слов и возбуждение ошибки"""
         cleaned_data = self.cleaned_data['title']
         for word in FORBIDDEN_WORDS:
             if word in cleaned_data.lower():
@@ -32,6 +33,8 @@ class ProductForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
 
     def clean_description(self):
+        """Поиск в описании запрещенных слов и генерация ошибки"""
+
         cleaned_data = self.cleaned_data['description']
         for word in FORBIDDEN_WORDS:
             if word in cleaned_data.lower():

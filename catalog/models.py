@@ -15,7 +15,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='Цена')
     created_at = models.DateTimeField(auto_now_add=True)  # Дата создания (генерируется автоматически)
     modified_at = models.DateTimeField(auto_now=True)  # Дата изменения (генерируется автоматически)
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True,)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)  # Владелец
 
     def __str__(self):
         """Строковое представление"""

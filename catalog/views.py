@@ -99,11 +99,12 @@ class ProductCreateView(CreateView):
     success_url = reverse_lazy('catalog:home')
 
     def form_valid(self, form):
-        product = form.save()
-        product.owner = self.request.user
-        product.save()
-        return super().form_valid(form)
+        """Добавление в создаваемый продукт информации об авторизованном пользователе"""
 
+        product = form.save()  # Сохранение информации о созданном продукте
+        product.owner = self.request.user  # присваивание атрибуту owner
+        product.save()  # сохранение
+        return super().form_valid(form)
 
 
 class ProductUpdateView(UpdateView):
