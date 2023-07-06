@@ -129,6 +129,7 @@ class ProductUpdateView(UpdateView):
             formset = ParentFormset(instance=self.object)
 
         context_data['formset'] = formset
+        print(self.request.user.has_perm('catalog.Сan change description'))
         return context_data
 
     def form_valid(self, form):
@@ -172,4 +173,6 @@ class VersionListView(ListView):
         context = super().get_context_data(*args, **kwargs)  # получение контекста
         context['product_title'] = product.title  # добавление в контекст наименования продукта
         context['pk'] = product.pk  # добавление в контекст id продукта
+        context['user'] = product.owner
+        context['current_user'] = self.request.user
         return context

@@ -16,6 +16,7 @@ class Product(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # Дата создания (генерируется автоматически)
     modified_at = models.DateTimeField(auto_now=True)  # Дата изменения (генерируется автоматически)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, blank=True, null=True)  # Владелец
+    is_published = models.BooleanField(default=False, verbose_name='Признак публикации')
 
     def __str__(self):
         """Строковое представление"""
@@ -24,6 +25,10 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'Продукт'
         verbose_name_plural = 'Продукты'
+        permissions = (('сan_change_description', 'can change description'),
+                       ('сan_change_category', 'can change category'),
+                       ('сan_change_is_published', 'can change is_published'),
+                       ('сan_view_price', 'can view price'))
 
 
 class Category(models.Model):

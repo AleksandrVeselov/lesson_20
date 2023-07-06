@@ -14,7 +14,7 @@ class ProductForm(forms.ModelForm):
 
         # Поля для заполнения
         # fields = '__all__'  # Все поля
-        fields = ('title', 'image', 'description', 'category', 'price')  # Выбранные поля
+        fields = ('title', 'image', 'description', 'category', 'price', 'is_published')  # Выбранные поля
         # exclude = ('image',)  # Кроме поля image
 
     def clean_title(self):
