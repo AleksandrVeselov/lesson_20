@@ -121,7 +121,7 @@ class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView)
     # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
     success_url = reverse_lazy('catalog:home')
 
-    permission_required = 'catalog.Can change Продукт'
+    permission_required = 'catalog.сan_change_description'
 
     def get_context_data(self, **kwargs):
         """Переопределение метода get_context_data, добавление в контекст формсета"""

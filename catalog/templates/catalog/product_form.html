@@ -27,7 +27,6 @@
                             </div>
                             </div>
                         </div>
-            </div>
                     {% elif perms.catalog.сan_change_description %}
                         {{ form.description }}
                         Признак публикации    {{ form.is_published }}
@@ -35,8 +34,9 @@
                         <button type="submit" class="btn-success">Сохранить</button>
                     {% endif %}
             </div>
-            <div class="card-footer"></div>
         </div>
+            <div class="card-footer"></div>
+    </div>
     </form>
 
 
