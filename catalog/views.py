@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
@@ -85,13 +86,15 @@ class BlogUpdatePost(UpdateView):
 
 
 class BlogDeletePost(DeleteView):
-    """Класс-контроллер для уделения записи в блоге"""
+    """Класс-контроллер для удаления записи в блоге"""
     model = Blog  # Модель, с которой он работает
     success_url = '/blog/'  # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
 
 
-class ProductCreateView(CreateView):
-    """Класс-контроллер для создания продукта"""
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    """Класс-контроллер для создания продукта
+    LoginRequiredMixin - только для авторизованных пользователей"""
+
     model = Product  # Модель, с которой он работает
     form_class = ProductForm  # Форма для заполнения
 
@@ -107,13 +110,18 @@ class ProductCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
-    """Класс-контроллер для редактирования продукта"""
+class ProductUpdateView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    """Класс-контроллер для редактирования продукта
+    LoginRequiredMixin - только для авторизованных пользователей
+    PermissionRequiredMixin - только для пользователей с указанными правами"""
+
     model = Product  # Модель, с которой он работает
     form_class = ProductForm  # Форма для заполнения
 
     # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
     success_url = reverse_lazy('catalog:home')
+
+    permission_required = 'catalog.Can change Продукт'
 
     def get_context_data(self, **kwargs):
         """Переопределение метода get_context_data, добавление в контекст формсета"""
@@ -129,7 +137,6 @@ class ProductUpdateView(UpdateView):
             formset = ParentFormset(instance=self.object)
 
         context_data['formset'] = formset
-        print(self.request.user.has_perm('catalog.Сan change description'))
         return context_data
 
     def form_valid(self, form):
@@ -148,11 +155,16 @@ class ProductUpdateView(UpdateView):
         return reverse('catalog:version', args=[self.kwargs.get('pk')])
 
 
-class ProductDeleteView(DeleteView):
-    """Класс-контроллер для удаления продукта"""
+class ProductDeleteView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+    """Класс-контроллер для удаления продукта, с применением миксинов
+    LoginRequiredMixin - только для авторизованных пользователей
+    PermissionRequiredMixin - только для пользователей с указанными правами"""
+
     model = Product  # Модель, с которой он работает
     # URL адрес, на который происходит перенаправление после успешного удаления записи в блоге
     success_url = reverse_lazy('catalog:home')
+
+    permission_required = 'catalog.Can delete Продукт'  # права пользователей
 
 
 class VersionListView(ListView):
@@ -173,6 +185,4 @@ class VersionListView(ListView):
         context = super().get_context_data(*args, **kwargs)  # получение контекста
         context['product_title'] = product.title  # добавление в контекст наименования продукта
         context['pk'] = product.pk  # добавление в контекст id продукта
-        context['user'] = product.owner
-        context['current_user'] = self.request.user
         return context

@@ -15,7 +15,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ProductAdmin(admin.ModelAdmin):
     """Админ-панель для работы с моделью Product"""
 
-    list_display = ['pk', 'title', 'price', 'category']  # Поля для отображения в админ-панели
+    list_display = ['pk', 'title', 'price', 'category', 'owner']  # Поля для отображения в админ-панели
     list_filter = ('category',)  # Поля, по которым можно фильтровать записи
     search_fields = ('title', 'description')  # Поля, по которым производится поиск
 

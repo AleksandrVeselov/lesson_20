@@ -9,7 +9,7 @@
     <p class="lead">Skystore - это отличный вариант хранения ваших товаров, которые вы бы хотели
         продать</p>
 </div>
-{% if request.user.is_authenticated %}
+{% if request.user.is_superuser %}
     <nav class="col-2 offset-5">
         <a class="btn btn-lg btn-block btn-outline-primary mb-4" href="{% url 'catalog:create_product' %}">Новый продукт</a>
     </nav>
@@ -31,7 +31,7 @@
 {#                        <img src="{{ object.image|mediapath_filter }}" /> <!-- filter -->#}
                         <li>Владелец: {{ object.owner }}</li>
                     </ul>
-                    {% if object.owner == request.user %}
+                    {% if object.owner == request.user or request.user.is_superuser %}
                         <a href="{% url 'catalog:update_product' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
                         <a href="{% url 'catalog:delete_product' object.pk%}" type="button" class="btn btn-lg btn-block btn-outline-primary">Удалить</a>
                     {% elif perms.catalog.сan_change_description %}
