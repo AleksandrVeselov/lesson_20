@@ -1,17 +1,17 @@
 {% extends 'catalog/base.html' %}
 
 {% block content %}
-    <form method="post" enctype="multipart/form-data">
-    <div class="col-6">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    Добавление продукта
-                </h3>
-            </div>
-            <div class="card-body">
+    {% if product.owner == request.user or request.user.is_superuser %}
+        <form method="post" enctype="multipart/form-data">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Добавление продукта
+                    </h3>
+                </div>
+                <div class="card-body">
                     {% csrf_token %}
-                    {% if product.owner == request.user or request.user.is_superuser %}
                         {{ form.as_p }}
                         <button type="submit" class="btn-success">Сохранить</button>
                         <div class="col-6">
@@ -27,17 +27,28 @@
                             </div>
                             </div>
                         </div>
-                    {% elif perms.catalog.сan_change_description %}
-                        {{ form.description }}
-                        Признак публикации    {{ form.is_published }}
-                        {{ form.category }}
-                        <button type="submit" class="btn-success">Сохранить</button>
-                    {% endif %}
+                </div>
             </div>
-        </div>
             <div class="card-footer"></div>
     </div>
     </form>
-
+    {% elif perms.catalog.сan_change_description %}
+        <form method="post" enctype="multipart/form-data">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        Добавление продукта
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn-success">Сохранить</button>
+                </div>
+            </div>
+        </div>
+        </form>
+    {% endif %}
 
 {% endblock %}

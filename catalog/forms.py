@@ -14,6 +14,7 @@ class ProductForm(forms.ModelForm):
 
         # Поля для заполнения
         # fields = '__all__'  # Все поля
+
         fields = ('title', 'image', 'description', 'category', 'price', 'is_published')  # Выбранные поля
         # exclude = ('image',)  # Кроме поля image
 
@@ -41,6 +42,30 @@ class ProductForm(forms.ModelForm):
                 raise forms.ValidationError(f'Нельзя добавлять продукты у которых в описании есть слово {word}')
 
         return cleaned_data
+
+
+class ProductFormModerator(forms.ModelForm):
+    """Класс-представление формы для создания продукта для модератора"""
+
+    class Meta:
+        model = Product  # Модель, с которой он работает
+        fields = ('description', 'category', 'is_published')  # Выбранные поля
+
+    def clean_description(self):
+        """Поиск в описании запрещенных слов и генерация ошибки"""
+
+        cleaned_data = self.cleaned_data['description']
+        for word in FORBIDDEN_WORDS:
+            if word in cleaned_data.lower():
+                raise forms.ValidationError(f'Нельзя добавлять продукты у которых в описании есть слово {word}')
+
+        return cleaned_data
+
+    def __init__(self, *args, **kwargs):
+        """Стилизация формы"""
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
 
 class VersionForm(forms.ModelForm):
