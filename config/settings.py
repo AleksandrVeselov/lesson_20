@@ -130,7 +130,7 @@ STATICFILES_DIRS = (BASE_DIR / 'static',)
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'media/'
 
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 465
@@ -145,10 +145,14 @@ LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/'  # URL на который происходит перенаправление в случае если у пользователя нет доступа к нужной странице
 
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379',
+CACHE_ENABLED = True
+
+if CACHE_ENABLED:
+    # Настройки кеширования
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': 'redis://127.0.0.1:6379',
+        }
     }
-}
 

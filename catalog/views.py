@@ -7,13 +7,18 @@ from django.views.generic import ListView, TemplateView, DetailView, CreateView,
 
 from catalog.forms import ProductForm, VersionForm, ProductFormModerator
 from catalog.models import Product, Blog, Version
-from catalog.services import send_email_100
+from catalog.services import send_email_100, get_cashed_categories_list
 
 
 # def home(request):
 #     products_list = Product.objects.all()
 #     context = {'object_list': products_list}
 #     return render(request, 'catalog/home.html', context)
+def categories_list(request):
+    categories = get_cashed_categories_list()
+    context = {'object_list': categories, }
+    return render(request, 'catalog/categories.html', context)
+
 
 class ProductListView(ListView):
     """Класс-контроллер для страницы со списком продуктов"""
