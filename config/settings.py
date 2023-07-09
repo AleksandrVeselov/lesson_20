@@ -80,9 +80,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'catalog',
-        'USER': 'postgres',
-        'PASSWORD': '12356',
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASSWORD'),
     }
 }
 
@@ -133,8 +133,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
 
-EMAIL_HOST = 'smtp.mail.ru'
-EMAIL_PORT = 465
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')  # Здесь должен быть пароль для внешнего приложения из аккаунта mail.ru
 EMAIL_USE_TLS = False
